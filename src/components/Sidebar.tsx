@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { site } from "@/config/site";
+import { assetUrl } from "@/lib/asset";
 
 const nav = [
   { href: "/", label: "About" },
@@ -27,11 +27,10 @@ export function Sidebar() {
         <div className="flex items-center gap-4 lg:flex-col lg:items-center lg:text-center">
           <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-bg text-2xl font-semibold text-accent lg:h-36 lg:w-36 lg:text-4xl">
             {site.avatar ? (
-              <Image
-                src={site.avatar}
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={assetUrl(site.avatar)}
                 alt={site.name}
-                width={144}
-                height={144}
                 className="h-full w-full object-cover"
               />
             ) : (

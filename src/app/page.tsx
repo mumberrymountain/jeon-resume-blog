@@ -1,5 +1,5 @@
 import { site } from "@/config/site";
-import Image from "next/image";
+import { assetUrl } from "@/lib/asset";
 import {
   intro,
   skills,
@@ -122,11 +122,10 @@ export default function AboutPage() {
               >
                 <div className="flex items-center gap-4">
                   {cert.image && (
-                    <Image
-                      src={cert.image}
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={assetUrl(cert.image)}
                       alt={cert.name}
-                      width={48}
-                      height={48}
                       className="h-12 w-12 shrink-0 object-contain"
                     />
                   )}
