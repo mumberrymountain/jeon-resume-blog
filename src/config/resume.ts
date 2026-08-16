@@ -117,7 +117,7 @@ export const contributions: Contribution[] = [
 export const experiences: Experience[] = [
   {
     company: "(주) 플래티어",
-    role: "EC솔루션연구소 아키텍쳐링 파트 · DevOps",
+    role: "AI 솔루션연구소 아키텍쳐 엔지니어링 파트 · DevOps",
     period: "2026.06.15 ~ ",
     highlights: [],
   },
