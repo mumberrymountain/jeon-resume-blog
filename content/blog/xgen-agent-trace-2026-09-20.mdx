@@ -1,8 +1,8 @@
 ---
-title: "XGEN AI 에이전트 워크플로우 분산 추적, 설계부터 경보까지"
+title: "서비스 관측의 해상도, AI 에이전트 노드까지 선명해지다"
 date: "2026-09-20"
 description: "AI 에이전트 워크플로우에서 '어느 노드가 느렸는지, 어느 노드에서 실패했는지'에 답하기 위해 Zero-code와 Manual Instrumentation을 결합하고, Grafana Tempo로 대시보드와 경보까지 구성한 과정을 정리합니다."
-tags: ["OpenTelemetry", "Grafana Tempo", "Observability", "AI Agent", "MSA"]
+tags: ["OpenTelemetry", "Grafana Tempo", "Observability", "AI Agent"]
 ---
 
 ## AI 에이전트 워크플로우, 노드 단위 추적의 공백
@@ -13,7 +13,7 @@ tags: ["OpenTelemetry", "Grafana Tempo", "Observability", "AI Agent", "MSA"]
 
 동일한 이슈를 이전 J은행 프로젝트의 요구사항에서도 확인할 수 있었습니다. 해당 고객사의 요구사항에는 "Agent 노드 실행 오류 감지", "MCP 도구 실행 실패 감지", "타임아웃 발생 감지" 같은 항목들이 포함되어 있었는데 대응 방식은 "로그화면 제공"으로 갈무리되어 있었으며, 어느 노드에서, 어느 단계에서 발생한 오류인지를 어떤 구조로 보여줄지는 정의돼 있지 않았습니다.
 
-결국 L홈쇼핑도, J은행 프로젝트도 같은 문제를 드러내며, 관측성 차원에서 제품이 나아가야 할 방향을 뚜렷하게 가리키고 있었습니다. 서비스·인프라 레벨 관측은 확보됐거나 확보할 수 있지만, "노드 단위 실행 경계"만큼은 애플리케이션 코드 안에서 직접 계측하지 않는 한 만들어지지 않는다는 것이었습니다. 그렇다면 여타 다른 솔루션에서는 이걸 어떻게 해결하고 있을까요?
+결국 L홈쇼핑도, J은행 프로젝트도 같은 문제를 드러내며, 관측성 차원에서 제품이 나아가야 할 방향을 뚜렷하게 가리키고 있었습니다. 서비스·인프라 레벨 관측은 확보됐거나 확보할 수 있지만, "노드 단위 실행 경계"만큼은 애플리케이션 코드 안에서 직접 계측하지 않는 한 만들어지지 않는다는 것이었습니다. 그렇다면 여타 다른 솔루션에서는 이걸 어떻게 해결하고 있을지가 궁금했습니다.
 
 ## 노드 단위 트레이싱, n8n의 사례
 
@@ -45,9 +45,9 @@ _wf_span = start_span(
 
 ## AI 에이전트 분산 추적 아키텍처 전략 세우기
 
-n8n에서 참고할 지점은 명확했습니다. 워크플로우·노드 실행이라는 도메인 경계는 표준 계측만으로는 잡히지 않으니, OTel SDK로 코드 안에서 직접 커스텀 span을 열어야 한다는 방향성이었습니다. 따라서 저는 `service.observability`라는 단일 진입점 패키지의 `start_span`/`end_span` 래퍼로 워크플로우·노드 단위 span을 코드 안에서 직접 열고, 그 span에 `workflow_id`, `interaction_id`, 실행 모드 같은 XGEN 커스텀 속성까지 함께 실어 노드 단위 추적의 근거를 확보하도록 OTel의 Manual Instrumentation을 설계했습니다.
+저희가 참고할 지점은 명확했습니다. 워크플로우·노드 실행이라는 도메인 경계는 표준 계측만으로는 잡히지 않으니, OTel SDK로 코드 안에서 직접 커스텀 span을 열어야 한다는 방향성이었습니다. 따라서 저는 `service.observability`라는 단일 진입점 패키지의 `start_span`/`end_span` 래퍼로 워크플로우·노드 단위 span을 코드 안에서 직접 열고, 그 span에 `workflow_id`, `interaction_id`, 실행 모드 같은 XGEN 커스텀 속성까지 함께 실어 노드 단위 추적의 근거를 확보하도록 OTel의 Manual Instrumentation을 설계했습니다.
 
-다만 이것만으로는 부족했는데, 결정적으로 다른 점이 한 가지 있었기 때문입니다. 모놀리식 아키텍쳐에 근간을 두는 n8n은 워크플로우 실행이 단일 프로세스 안에서 끝나는 구조였지만, 저희 서비스는 MSA 아키텍처로 구성돼 있어 워크플로우 하나가 `xgen-workflow` → `xgen-document`, 혹은 `xgen-workflow` → `xgen-mcp-station`처럼 여러 서비스를 횡단하며 호출되는 경우가 더러 있습니다. 따라서 노드 단위 수동 계측만 먼저 넣으면, 정작 서비스 경계를 넘는 순간 Trace Context가 끊겨버릴 위험이 있었습니다.
+다만 이것만으로는 부족했는데, 결정적으로 다른 점이 한 가지 있었기 때문입니다. 모놀리식 아키텍쳐에 근간을 두는 n8n은 워크플로우 실행이 단일 프로세스 안에서 끝나는 구조였지만,  MSA 아키텍처로 구성돼 있어 워크플로우 하나가 `xgen-workflow` → `xgen-document`, 혹은 `xgen-workflow` → `xgen-mcp-station`처럼 여러 서비스를 횡단하며 호출되는 경우가 더러 있습니다. 따라서 노드 단위 수동 계측만 먼저 넣으면, 정작 서비스 경계를 넘는 순간 Trace Context가 끊겨버릴 위험이 있었습니다.
 
 이 공백을 메우기 위해 Manual Instrumentation에 앞서 Zero-code Instrumentation을 먼저 깔았습니다. 쿠버네티스 클러스터에 OTel Operator를 배포해 Pod 단위 자동 계측 주입을 위한 컨트롤 플레인부터 구성하고, Python 런타임을 Auto Instrumentation 대상으로 등록했습니다. 이후로는 대상 워크로드에 `instrumentation.opentelemetry.io/inject-python: "true"` annotation 한 줄만 추가하면, Operator가 사이드카·init container로 계측 라이브러리를 자동 주입해 코드 변경 없이 HTTP·DB 같은 표준 경계에 span이 생성됐습니다. 에이전트 코드를 한 줄도 건드리지 않고 클러스터 전역에 깐 이 기본 배관 위에서, 비로소 OTel SDK 기반 Manual Instrumentation으로 워크플로우·노드 단위 span을 얹는 2단계 아키텍처가 완성됐습니다.
 
@@ -72,15 +72,15 @@ workflow.execute
 
 ## 쌓인 Trace를 대시보드와 경보로 연결하기
 
+![xgen-agent-trace-2026-09-20_1](/xgen-agent-trace-2026-09-20/xgen-agent-trace-2026-09-20_1.png)
+
+![xgen-agent-trace-2026-09-20_2](/xgen-agent-trace-2026-09-20/xgen-agent-trace-2026-09-20_2.png)
+
 앞서 코드와 아키텍처 레벨에서 분산 추적을 구현했다면 이제 이를 가시화하여 보여줄 UI를 채택해야 했습니다.
 이미 한 번 사용한 적 있는 Jaeger UI는 별도 쿼리 언어 없이 폼으로 검색할 수 있고 서비스 의존성 그래프까지 기본 제공해 진입장벽이 낮은 편입니다. 다만 독립 실행형 도구라 메트릭·로그를 보려면 이미 소스로 포함된 Grafana와 별개로 화면을 옮겨 다녀야 했습니다.
 Grafana Tempo는 TraceQL을 새로 익혀야 하고 별도 인덱스가 없어 속성 기반 검색은 Jaeger보다 제한적입니다. 하지만 이미 쓰고 있는 Grafana 생태계 안에서 로그·메트릭과 한 화면에 묶이고, 워크플로우·에이전트 턴·도구 호출 같은 지표를 원하는 패널로 직접 짜 넣는 커스텀 대시보드까지 만들 수 있다는 이점이 있습니다.
 제품 화면에 맞춰 아예 처음부터 새로 만드는 자체 UI는 커스터마이징 자유도는 높지만, 이미 Grafana로 충분한 메트릭·로그·경보 화면까지 완전히 다시 만들어야 하며 조회·검색·쿼리 엔진도 직접 구현해야 하는지라 오버헤드가 큽니다.
 결과적으로 저는 이 중에서 Grafana Tempo를 선택했습니다. 이미 Grafana를 메트릭·로그 대시보드로 쓰고 있어 같은 화면에 바로 이어붙일 수 있었고, Grafana Alerting으로 AI 에이전트 워크플로우 경보까지 트리거할 수 있으며, Jaeger UI보다 대시보드를 자유롭게 커스터마이징할 수 있다는 점이 결정적이었습니다.
-
-![xgen-agent-trace-2026-09-20_1](/xgen-agent-trace-2026-09-20/xgen-agent-trace-2026-09-20_1.png)
-
-![xgen-agent-trace-2026-09-20_2](/xgen-agent-trace-2026-09-20/xgen-agent-trace-2026-09-20_2.png)
 
 대시보드를 계속 들여다보고 있을 수는 없으니, AI 에이전트 워크플로우에 관한 경보도 함께 세팅해뒀습니다. Tempo 자체가 죽었는지, span 수집과 지표 반영 사이가 끊기지는 않았는지, 여러 워크플로우가 동시에 실패하는 플랫폼 장애인지, 특정 워크플로우가 지속적으로 실패하는지, RAG 검색이 조용히 실패하고 있는지를 각각 감시합니다. J은행 요구사항에서 "로그화면 제공"으로만 뭉뚱그려져 있던 Agent 노드 실행 오류 감지, MCP 도구 실행 실패 감지, 워크플로우 실행 실패 감지 항목들이 이 대시보드와 경보로 비로소 구체적인 형태를 갖춘 셈입니다.
 
