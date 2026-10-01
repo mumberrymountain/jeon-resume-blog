@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import rehypePrettyCode from "rehype-pretty-code";
 import { getAllSlugs, getPostBySlug } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
 import { mdxComponents } from "@/components/mdx-components";
@@ -57,7 +58,13 @@ export default async function BlogPostPage({ params }: Props) {
         <MDXRemote
             source={post.content}
             components={mdxComponents}
-            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                // 빌드 시점에 Shiki로 코드 블록 언어별 색상을 입힙니다.
+                rehypePlugins: [[rehypePrettyCode, { theme: "github-dark" }]],
+              },
+            }}
           />
       </div>
     </article>
