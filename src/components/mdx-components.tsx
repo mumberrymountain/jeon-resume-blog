@@ -23,7 +23,10 @@ export const mdxComponents: MDXComponents = {
   },
   img: ({ src = "", alt = "", ...props }) => {
     const resolvedSrc = src.startsWith("/") ? assetUrl(src) : src;
+    // 옵시디언처럼 alt 뒤에 "|40%" 또는 "|365"를 붙이면 너비로 적용합니다.
+    const [altText, size] = alt.split("|");
+    const width = size && (size.endsWith("%") ? size : `${size}px`);
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={resolvedSrc} alt={alt} {...props} />;
+    return <img src={resolvedSrc} alt={altText} style={width ? { width } : undefined} {...props} />;
   },
 };
