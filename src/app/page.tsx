@@ -2,6 +2,7 @@ import { PageTitle, SectionTitle } from "@/components/PageTitle";
 import { assetUrl } from "@/lib/asset";
 import {
   intro,
+  strengths,
   skills,
   experiences,
   education,
@@ -12,6 +13,29 @@ export default function AboutPage() {
   return (
     <div className="space-y-12">
       <PageTitle title="About" description={intro} />
+
+      {/* Strengths */}
+      <section className="space-y-4">
+        <SectionTitle>Strengths</SectionTitle>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {strengths.map((item) => (
+            <div
+              key={item.label}
+              className="rounded-2xl border border-border bg-surface p-5"
+            >
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+                {item.label}
+              </p>
+              <p className="mt-2 font-semibold leading-snug text-white">
+                {item.headline}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                {item.proof}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Skills */}
       <section className="space-y-4">

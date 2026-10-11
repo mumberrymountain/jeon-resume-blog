@@ -36,6 +36,15 @@ export type SkillGroup = {
   items: Skill[];
 };
 
+export type Strength = {
+  /** 카드 상단의 짧은 키워드 */
+  label: string;
+  /** 한 문장 강점 선언 */
+  headline: string;
+  /** 근거가 되는 실적 */
+  proof: string;
+};
+
 export type Certification = {
   name: string;
   issuer?: string;
@@ -53,9 +62,36 @@ export type Contribution = {
   prUrl?: string;
 };
 
-export const intro = `지속적으로 기여하고 만들어가는 DevOps/SRE 엔지니어입니다.
-흥미 본위가 아닌 전략적 기술 선택을 고민합니다.
-Prometheus, Node Exporter, OpenTofu 등 다양한 CNCF 프로젝트에 관심을 두고 오픈소스 기여 활동을 이어가고 있습니다.`;
+export const intro = `원인을 끝까지 파고들어 숫자로 증명하는 DevOps/SRE 엔지니어입니다.
+배포 파이프라인 51% 단축, 서버 메모리 81% 절감처럼 측정 가능한 개선을 만들고, 도구의 버그를 만나면 Prometheus·OpenTofu 등 CNCF 프로젝트에 직접 수정을 기여해 왔습니다.
+흥미 본위가 아닌 전략적 기술 선택으로, 같은 문제가 반복되지 않는 구조를 만듭니다.`;
+
+export const strengths: Strength[] = [
+  {
+    label: "Measurable Impact",
+    headline: "병목을 찾아 숫자로 증명합니다",
+    proof:
+      "배포 파이프라인 51% 단축 · GitLab 서버 메모리 81% 절감 · 컨테이너 보안 점검 53.8점 → 74점",
+  },
+  {
+    label: "Open Source",
+    headline: "쓰는 도구의 버그를 소스까지 파고들어 고칩니다",
+    proof:
+      "Prometheus · node_exporter · OpenTofu · fastexcel 버그 수정, Helm v4 문서 한국어 번역",
+  },
+  {
+    label: "Root Cause",
+    headline: "증상에서 멈추지 않고 근본 원인과 재발 방지까지 갑니다",
+    proof:
+      "iptables 버그로 인한 K3s 노드 부하 규명 · GPU 드라이버 불일치 장애 복구 · AWS 보안 사고 추적 후 실시간 탐지 체계 구축. 분석 과정은 블로그에 공개",
+  },
+  {
+    label: "Observability",
+    headline: "Metric · Log · Trace 전 영역을 설계합니다",
+    proof:
+      "Prometheus · Grafana · Loki · Tempo · OpenTelemetry로 AI 에이전트 워크플로우를 노드 단위까지 추적",
+  },
+];
 
 export const skills: SkillGroup[] = [
   {
@@ -180,61 +216,87 @@ export const experiences: Experience[] = [
     company: "(주) 플래티어",
     role: "AI 솔루션연구소 아키텍쳐 엔지니어링 파트 · DevOps",
     period: "2026.06.15 ~ ",
-    highlights: [],
+    description:
+      "기업용 AI 에이전트 솔루션(XGEN)이 안정적으로 동작하도록 서버 인프라를 구축·운영하고, 문제를 빨리 찾아낼 수 있는 모니터링 체계를 만들고 있습니다.",
+    highlights: [
+      {
+        text: "배포 파이프라인 실행 시간 51% 단축 (9분 36초 → 4분 44초)",
+        sub: [
+          "단계별 소요 시간을 분석해, 매번 평균 6분 53초를 쓰면서도 결과물을 아무도 사용하지 않던 빌드 단계를 찾아 제거 (Jenkins, Nexus)",
+          "공유 설정을 쓰는 모든 프로젝트에 기능 영향 없이 한 번에 적용. 오래된 결과물로 빌드될 위험이 있는 부분은 판단해 제외",
+        ],
+      },
+      {
+        text: "AI 에이전트 서비스의 지연·실패 원인 추적 체계 구축",
+        sub: [
+          "서비스 간 요청 흐름을 추적하는 시스템을 도입하고(OpenTelemetry, Jaeger), 기술별 제약을 비교해 구성 방식을 선정",
+          "\"어느 단계가 느렸는지, 어디서 실패했는지\"를 AI 워크플로우의 단계별로 확인할 수 있게 확장하고, 대시보드와 장애 경보를 구성 (Grafana Tempo)",
+        ],
+      },
+      {
+        text: "서버 장애 원인 규명 및 재발 방지",
+        sub: [
+          "쿠버네티스 서버의 CPU·메모리 부하 장애를 도구 버그(iptables)로 규명해 해결 (K3s)",
+          "자동 업데이트로 GPU 드라이버가 어긋나 AI 모델 서빙이 멈춘 장애를 복구하고, 재발 방지책으로 자동 업데이트를 중단",
+        ],
+      },
+      {
+        text: "단일 서버 구조를 이중화(HA)해 서비스 중단 위험 감소",
+        sub: [
+          "Redis·Qdrant를 단일 구성에서 이중화로 전환. 애플리케이션 코드 수정 없이 프록시(HAProxy)가 정상 서버로만 요청을 보내도록 구성",
+        ],
+      },
+      {
+        text: "클라우드 보안 사고 대응 및 실시간 탐지 체계 구축 (AWS)",
+        sub: [
+          "회사 홈페이지가 스팸 사이트로 연결되던 사고의 원인을 감사 로그로 추적해 복구하고, 과도하게 부여된 계정 권한을 최소 권한 원칙으로 재정비",
+          "위협 탐지 시 팀 메신저(Teams)로 즉시 알림이 가도록 구성 (GuardDuty). 도입 직후 개발 DB에 대한 악성 IP 접근 시도도 탐지",
+        ],
+      },
+      {
+        text: "컨테이너 보안 점검 점수 53.8점 → 74점 개선",
+        sub: [
+          "고객사 보안 점검에서 기준 미달이던 서버에 컨테이너 격리·권한 제한 등 보안 설정을 적용 (Docker). 서비스에 영향을 주는 항목은 제외하고 적용",
+        ],
+      },
+    ],
   },
   {
     company: "(주) 소프트인",
-    role: "시트개발팀 · DevOps",
+    role: "DevOps",
     period: "2023.04.23 ~ 2026.05.31",
+    description: "사내 개발 서버와 AWS 인프라의 운영·모니터링·보안을 담당했습니다.",
     highlights: [
       {
-        text: "사내 GitLab 서버 Docker 환경 기반 재구축 및 성능 개선",
+        text: "사내 코드 저장소(GitLab) 서버 메모리 81% 절감 (18GB → 3.3GB)",
         sub: [
-          "기존 서버를 GitLab 및 GitLab Runner를 포함한 Docker Compose 기반으로 재구축하여 인프라 표준화 및 유지보수성 개선",
-          "과도한 메모리 점유의 원인인 Puma worker 수 기본값(20)으로 파악, 실사용 트래픽에 맞게 3으로 조정하여 모니터링 스택 최적화와 함께 메모리 81% 절감 (18GB → 3.3GB)",
+          "서버를 Docker Compose로 재구축해 관리 방식을 표준화하고, 과다 점유의 원인이던 설정(Puma worker 수 20 → 3)을 실사용량에 맞게 조정",
         ],
       },
       {
-        text: "서버 디스크 풀(Full) 장애 대응 및 재발 방지 체계 구축",
+        text: "서버 다운 장애를 계기로 모니터링·알림 체계 구축",
         sub: [
-          "디스크 사용률 100% 도달로 인한 서버 다운 장애 발생 원인 분석 및 복구",
-          "Prometheus + Alertmanager 기반 서버 모니터링 시스템 구축",
-          "node_exporter 설치 및 연동으로 호스트 메트릭 수집 체계 구성 (디스크 90% 초과 / 가용 메모리 15% 미만 / 디스크 I/O 대기율 80% 초과 임계값 기반 PromQL Alert Rule 설계)",
-          "cAdvisor 연동으로 컨테이너 메트릭 수집 체계 구성 (CPU 80% 초과 2분 지속 / 메모리 서버 전체의 50% 초과 2분 지속 / 컨테이너 다운 1분 지속 기반 Alert Rule 설계로 호스트·컨테이너 이중 감시 체계 구성)",
-          "nginx-prometheus-exporter 연동으로 nginx 메트릭 수집 — Active 커넥션·RPS·드롭 커넥션 실시간 수집으로 커넥션 폭증 이상 징후 감지 체계 구성",
-          "Grafana 대시보드 구축, 호스트 및 컨테이너 메트릭 시각화, 서버 상태 실시간 모니터링 환경 구성",
-          "Alertmanager 사내 이메일 및 Microsoft Teams Webhook 라우팅 설정으로 임계치 초과 시 개발팀 다중 채널 자동 알림 연동, 장애 사전 감지 체계 확립",
-          "GitLab CI/CD 파이프라인 구축으로 모니터링 설정 변경 사항 자동 배포 체계 구성 (promtool 기반 Alert Rule·Config 문법·유효성 검증)",
+          "디스크 100%로 서버가 멈춘 원인을 분석·복구하고, 서버·컨테이너·웹서버 상태를 상시 수집해 임계치를 넘으면 이메일과 Teams로 개발팀에 자동 알림 (Prometheus, Alertmanager, Grafana)",
+          "모니터링 설정 변경도 자동 검증·배포되도록 CI/CD를 구성",
         ],
       },
       {
-        text: "SSH 브루트포스 공격으로 인한 서비스 장애 대응 및 보안 강화",
+        text: "외부 공격 2건 대응 및 방어 강화",
         sub: [
-          "Grafana 대시보드에서 CPU 사용률 100% 급등 및 메모리 사용률 이상 징후 포착, 로그 분석을 통해 SSH 브루트포스 공격을 원인으로 규명 및 서비스 복구",
-          "fail2ban 도입으로 일정 횟수 이상 인증 실패 시 자동 IP 차단 정책 적용, 재발 방지",
-          "운영 EC2 보안그룹을 점검하여 사내 IP에서만 SSH 접근 허용하도록 인바운드 규칙 재정비",
+          "SSH 무차별 대입 공격으로 인한 CPU 급등을 로그 분석으로 규명, 반복 실패 IP 자동 차단 및 접속 허용 IP를 사내로 제한 (fail2ban)",
+          "WordPress 서버의 메모리 폭증이 외부 자동 스캐너 공격임을 규명, 민감 파일 접근 차단과 요청 횟수 제한 적용 (nginx)",
         ],
       },
       {
-        text: "WordPress 컨테이너 메모리 폭증 장애 대응 및 보안 강화",
+        text: "수동 관리하던 AWS 인프라를 코드로 전환 (Terraform)",
         sub: [
-          "Grafana 대시보드에서 새벽 시간대 WordPress 컨테이너 메모리 350MiB → 1.17GiB 급증 이상 징후 포착",
-          "docker logs 및 nginx 액세스 로그 분석을 통해 외부 자동화 스캐너의 백업파일 열기 공격(.zip, .sql 등), PHP 웹쉘 탐색 시도를 원인으로 규명",
-          "nginx 설정 강화로 공격 표면 축소 — 민감 파일 확장자(.zip, .sql, .env 등) 및 숨김 파일 접근 차단 / limit_req_zone 기반 로그인 페이지 및 일반 요청 Rate Limiting 적용 / uploads 디렉토리 PHP 실행 차단으로 웹쉘 업로드 후 실행 방지",
+          "콘솔로 직접 관리하던 인프라를 코드로 옮겨 변경 이력과 형상을 관리하고, 상태 파일은 기존 GitLab에 중앙 보관해 추가 비용 없이 팀이 함께 사용",
         ],
       },
       {
-        text: "AWS 콘솔 관리 인프라 Terraform 마이그레이션",
+        text: "AI 코드 리뷰 자동화 도입",
         sub: [
-          "기존 AWS 콘솔로 수동 관리되던 인프라를 terraform import 블록을 활용해 Terraform 코드로 마이그레이션, 인프라 형상 관리 체계 전환",
-          "Terraform tfstate를 GitLab 내장 HTTP Backend로 관리하여 별도 S3·외부 스토리지 없이 상태 파일 중앙화 및 팀 협업 환경 구성",
-        ],
-      },
-      {
-        text: "GitLab CI/CD 기반 AI 코드 리뷰 자동화 도입",
-        sub: [
-          "CodeRabbit 도입을 우선 검토하였으나 셀프호스팅 GitLab 환경에서의 제약으로 인해 오픈소스 기반의 PR-Agent로 대안 선정",
-          "GitLab CI/CD 파이프라인에 PR-Agent를 연동하여 Merge Request 생성 시 자동으로 코드 리뷰, 변경 사항 요약, 개선 제안이 수행되도록 구성",
+          "상용 도구(CodeRabbit)가 사내 환경에 맞지 않아 오픈소스(PR-Agent)로 대안을 선정, 병합 요청 시 자동으로 리뷰·요약·개선 제안이 달리도록 연동",
         ],
       },
     ],
