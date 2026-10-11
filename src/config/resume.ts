@@ -19,9 +19,21 @@ export type EducationItem = {
   period: string;
 };
 
+export type Skill = {
+  name: string;
+  /** simple-icons 슬러그 (https://simpleicons.org). 없으면 로고 없이 표시 */
+  icon?: string;
+  /** public 폴더의 로고 이미지 경로. icon보다 우선 */
+  image?: string;
+  /** 배지 배경색 (# 없는 hex) */
+  color: string;
+  /** 배지 글자색 (# 없는 hex). 기본은 흰색 */
+  textColor?: string;
+};
+
 export type SkillGroup = {
   category: string;
-  items: string[];
+  items: Skill[];
 };
 
 export type Certification = {
@@ -47,24 +59,73 @@ Prometheus, Node Exporter, OpenTofu 등 다양한 CNCF 프로젝트에 관심을
 
 export const skills: SkillGroup[] = [
   {
-    category: "DevOps / CI & CD",
-    items: ["Docker", "Kubernetes", "GitLab CI/CD", "GitHub Actions", "ArgoCD", "Terraform", "Ansible", "Jenkins"],
+    category: "🐳 Container & Orchestration",
+    items: [
+      { name: "Docker", icon: "docker", color: "2496ED" },
+      { name: "Kubernetes", icon: "kubernetes", color: "326CE5" },
+      { name: "Helm", icon: "helm", color: "0F1689" },
+      { name: "Kustomize", icon: "kubernetes", color: "326CE5" },
+      { name: "Istio", icon: "istio", color: "466BB0" },
+    ],
   },
   {
-    category: "Monitoring & Observability",
-    items: ["Prometheus", "Grafana", "Loki"],
+    category: "🔄 CI/CD & GitOps",
+    items: [
+      { name: "GitLab CI/CD", icon: "gitlab", color: "FC6D26" },
+      { name: "GitHub Actions", icon: "githubactions", color: "2088FF" },
+      { name: "Jenkins", icon: "jenkins", color: "D24939" },
+      { name: "ArgoCD", icon: "argo", color: "EF7B4D" },
+    ],
   },
   {
-    category: "Programming Languages",
-    items: ["Bash", "Go", "Python", "Java"],
+    category: "📦 Infrastructure as Code",
+    items: [
+      { name: "Terraform", icon: "terraform", color: "7B42BC" },
+      { name: "Ansible", icon: "ansible", color: "EE0000" },
+    ],
   },
   {
-    category: "Backend",
-    items: ["Spring Boot", "Spring Data JPA"],
+    category: "🤖 MLOps",
+    items: [
+      { name: "MLflow", icon: "mlflow", color: "0194E2" },
+      { name: "DVC", icon: "dvc", color: "945DD6" },
+      { name: "KServe", icon: "kubernetes", color: "326CE5" },
+      { name: "Kubeflow", image: "/image/kubeflow.svg", color: "0B2A6B" },
+    ],
   },
   {
-    category: "Database",
-    items: ["MySQL", "Redis"],
+    category: "📊 Monitoring & Observability",
+    items: [
+      { name: "Prometheus", icon: "prometheus", color: "E6522C" },
+      { name: "Grafana", icon: "grafana", color: "F46800" },
+      { name: "Loki", icon: "grafana", color: "F5A800" },
+      { name: "Tempo", icon: "grafana", color: "F46800" },
+      { name: "OpenTelemetry", icon: "opentelemetry", color: "425CC7" },
+      { name: "HolmesGPT", image: "/image/holmesgpt.png", color: "56F5CA", textColor: "11383A" },
+    ],
+  },
+  {
+    category: "🚀 Programming Languages",
+    items: [
+      { name: "Go", icon: "go", color: "00ADD8" },
+      { name: "Python", icon: "python", color: "3776AB" },
+      { name: "Bash", icon: "gnubash", color: "4EAA25" },
+      { name: "Java", icon: "openjdk", color: "ED8B00" },
+    ],
+  },
+  {
+    category: "⚙️ Backend",
+    items: [
+      { name: "Spring Boot", icon: "springboot", color: "6DB33F" },
+      { name: "FastAPI", icon: "fastapi", color: "009688" },
+    ],
+  },
+  {
+    category: "🗄️ Database",
+    items: [
+      { name: "MySQL", icon: "mysql", color: "4479A1" },
+      { name: "Redis", icon: "redis", color: "DC382D" },
+    ],
   },
 ];
 

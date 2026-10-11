@@ -36,10 +36,26 @@ export default function AboutPage() {
               <div className="flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <span
-                    key={item}
-                    className="rounded-md bg-bg px-2.5 py-1 text-sm"
+                    key={item.name}
+                    style={{
+                      backgroundColor: `#${item.color}`,
+                      color: item.textColor ? `#${item.textColor}` : undefined,
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-sm"
                   >
-                    {item}
+                    {(item.image || item.icon) && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={
+                          item.image
+                            ? assetUrl(item.image)
+                            : `https://cdn.simpleicons.org/${item.icon}/white`
+                        }
+                        alt=""
+                        className={`h-3.5 w-3.5 ${item.image ? "rounded-sm" : ""}`}
+                      />
+                    )}
+                    {item.name}
                   </span>
                 ))}
               </div>
