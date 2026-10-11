@@ -22,7 +22,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="rounded-[20px] bg-panel px-6 py-8 text-center lg:sticky lg:top-[7.5rem] lg:mt-24 lg:pt-0">
+    <aside className="intro-item intro-d2 rounded-[20px] bg-panel px-6 py-8 text-center lg:sticky lg:top-[7.5rem] lg:mt-24 lg:pt-0">
       <div className="mx-auto flex h-36 w-36 items-center justify-center overflow-hidden rounded-[20px] bg-surface text-4xl font-semibold text-accent lg:-mt-24 lg:h-[200px] lg:w-[200px]">
         {site.avatar ? (
           // eslint-disable-next-line @next/next/no-img-element

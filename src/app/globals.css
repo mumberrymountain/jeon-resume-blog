@@ -36,3 +36,128 @@ a {
   scrollbar-width: thin;
   scrollbar-color: theme("colors.border") transparent;
 }
+
+/* ── 첫 진입 인트로: 터미널 부팅 (src/components/Intro.tsx) ── */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  place-items: center;
+  padding: 1rem;
+  background: theme("colors.bg");
+  cursor: pointer;
+  transition: opacity 0.6s ease;
+}
+html[data-intro="play"] .intro,
+html[data-intro="leave"] .intro {
+  display: grid;
+}
+html[data-intro="play"] body {
+  overflow: hidden;
+}
+html[data-intro="leave"] .intro {
+  opacity: 0;
+}
+
+.intro__term {
+  width: 100%;
+  max-width: 560px;
+  overflow: hidden;
+  border: 1px solid theme("colors.border");
+  border-radius: 14px;
+  background: theme("colors.panel");
+  box-shadow: 0 30px 80px -20px rgb(47 128 237 / 0.25);
+  animation: intro-term-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+html[data-intro="leave"] .intro__term {
+  transform: scale(0.94) translateY(-12px);
+}
+@keyframes intro-term-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+
+.intro__bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 14px;
+  border-bottom: 1px solid theme("colors.border");
+  background: theme("colors.surface");
+}
+.intro__bar span {
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+}
+.intro__bar p {
+  flex: 1;
+  margin-right: 46px; /* 신호등 버튼 폭만큼 보정해 제목을 가운데로 */
+  text-align: center;
+  font-size: 0.75rem;
+  color: theme("colors.muted");
+}
+
+.intro__body {
+  min-height: 9.5rem;
+  margin: 0;
+  padding: 18px 20px 22px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #e6e9ef;
+  white-space: pre;
+  overflow-x: auto;
+}
+@media (min-width: 640px) {
+  .intro__body {
+    font-size: 0.9rem;
+  }
+}
+
+.intro__cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: #e6e9ef;
+  animation: intro-blink 1s steps(1) infinite;
+}
+.intro__cursor.is-typing {
+  animation: none;
+}
+@keyframes intro-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.intro__out {
+  animation: intro-out 0.25s ease both;
+}
+@keyframes intro-out {
+  from {
+    opacity: 0;
+  }
+}
+
+/* 인트로가 사라질 때 본문 요소가 순서대로 떠오름 */
+html[data-intro="leave"] .intro-item {
+  animation: intro-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--intro-delay, 0.2s);
+}
+.intro-d1 { --intro-delay: 0.15s; }
+.intro-d2 { --intro-delay: 0.3s; }
+.intro-d3 { --intro-delay: 0.42s; }
+.intro-d4 { --intro-delay: 0.54s; }
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}

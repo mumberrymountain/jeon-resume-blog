@@ -21,7 +21,7 @@ export function NavMenu() {
   const pathname = usePathname();
 
   return (
-    <nav className="rounded-2xl bg-panel p-3 lg:sticky lg:top-[7.5rem] lg:mt-24 lg:p-4">
+    <nav className="intro-item intro-d4 rounded-2xl bg-panel p-3 lg:sticky lg:top-[7.5rem] lg:mt-24 lg:p-4">
       <ul className="grid grid-cols-4 gap-2 lg:grid-cols-1 lg:gap-4">
         {nav.map(({ href, label, icon: Icon }) => {
           const active = isActive(pathname, href);
