@@ -41,7 +41,7 @@ export default async function BlogPostPage({ params }: Props) {
       </Link>
 
       <header className="space-y-3 border-b border-border pb-6">
-        <h1 className="text-3xl font-bold sm:text-4xl">{post.title}</h1>
+        <h1 className="font-serif text-3xl font-bold leading-tight text-white sm:text-4xl">{post.title}</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
           <time>{formatDate(post.date)}</time>
           <span>·</span>

@@ -3,6 +3,8 @@
 
 export const site = {
   name: "전인수",
+  // 상단 로고에 표시되는 영문 이름
+  nameEn: "Jeon Insoo",
   role: "DevOps Engineer & Infra Architect",
   location: "Seoul, Korea",
   email: "mumberrymountain@gmail.com",

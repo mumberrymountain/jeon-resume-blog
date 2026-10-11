@@ -1,4 +1,4 @@
-import { site } from "@/config/site";
+import { PageTitle, SectionTitle } from "@/components/PageTitle";
 import { assetUrl } from "@/lib/asset";
 import {
   intro,
@@ -11,26 +11,16 @@ import {
 export default function AboutPage() {
   return (
     <div className="space-y-12">
-      <header>
-        <p className="text-sm font-medium uppercase tracking-widest text-accent">
-          About
-        </p>
-        <h2 className="mt-2 text-3xl font-bold sm:text-4xl">
-        {site.name}
-        </h2>
-        <p className="mt-4 max-w-2xl whitespace-pre-line leading-relaxed text-muted">
-          {intro}
-        </p>
-      </header>
+      <PageTitle title="About" description={intro} />
 
       {/* Skills */}
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold">Skills</h3>
+        <SectionTitle>Skills</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
           {skills.map((group) => (
             <div
               key={group.category}
-              className="rounded-xl border border-border bg-surface p-4"
+              className="rounded-2xl border border-border bg-surface p-4"
             >
               <p className="mb-3 text-sm font-medium text-muted">{group.category}</p>
               <div className="flex flex-wrap gap-2">
@@ -66,12 +56,12 @@ export default function AboutPage() {
 
       {/* Experience */}
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold">Experience</h3>
+        <SectionTitle>Experience</SectionTitle>
         <div className="space-y-4">
           {experiences.map((exp) => (
             <article
               key={`${exp.company}-${exp.period}`}
-              className="rounded-xl border border-border bg-surface p-5"
+              className="rounded-2xl border border-border bg-surface p-5"
             >
               <h4 className="text-lg font-semibold">{exp.company}</h4>
               <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2">
@@ -109,12 +99,12 @@ export default function AboutPage() {
 
       {/* Education */}
       <section className="space-y-4">
-        <h3 className="text-xl font-semibold">Education</h3>
+        <SectionTitle>Education</SectionTitle>
         <div className="space-y-3">
           {education.map((edu) => (
             <div
               key={edu.school}
-              className="flex flex-wrap items-baseline justify-between gap-2 rounded-xl border border-border bg-surface p-5"
+              className="flex flex-wrap items-baseline justify-between gap-2 rounded-2xl border border-border bg-surface p-5"
             >
               <div>
                 <h4 className="font-semibold">{edu.school}</h4>
@@ -129,12 +119,12 @@ export default function AboutPage() {
       {/* Certifications */}
       {certifications.length > 0 && (
         <section className="space-y-4">
-          <h3 className="text-xl font-semibold">Certifications</h3>
+          <SectionTitle>Certifications</SectionTitle>
           <div className="space-y-3">
             {certifications.map((cert) => (
               <div
                 key={cert.name}
-                className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-surface p-5"
+                className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border bg-surface p-5"
               >
                 <div className="flex items-center gap-4">
                   {cert.image && (

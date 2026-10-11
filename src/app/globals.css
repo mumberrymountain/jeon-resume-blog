@@ -17,6 +17,16 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* 상단 히어로 배경: 점 패턴 + 은은한 광원, 아래로 갈수록 사라짐 */
+.hero-bg {
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgb(47 128 237 / 0.16), transparent 70%),
+    radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
+  background-size: 100% 100%, 22px 22px;
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent);
+  mask-image: linear-gradient(to bottom, black 40%, transparent);
+}
+
 a {
   color: inherit;
 }

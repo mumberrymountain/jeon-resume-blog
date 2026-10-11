@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
+import { PageTitle } from "@/components/PageTitle";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -11,15 +12,8 @@ export default function BlogListPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="space-y-8">
-      <header>
-        <p className="text-lg font-medium uppercase tracking-widest text-accent">
-          Blog
-        </p>
-        <p className="mt-3 text-muted">
-          기록하고 싶은 것들을 적습니다.
-        </p>
-      </header>
+    <div className="space-y-10">
+      <PageTitle title="Blog" description="기록하고 싶은 것들을 적습니다." />
 
       {posts.length === 0 ? (
         <p className="text-muted">아직 작성된 글이 없습니다.</p>
@@ -29,10 +23,10 @@ export default function BlogListPage() {
             <li key={post.slug}>
               <Link
                 href={`/blog/${post.slug}`}
-                className="block rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent/50"
+                className="group block rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-accent/50"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-lg font-semibold">{post.title}</h3>
+                  <h3 className="text-lg font-semibold text-white transition-colors group-hover:text-accent">{post.title}</h3>
                   <time className="text-sm text-muted">
                     {formatDate(post.date)}
                   </time>

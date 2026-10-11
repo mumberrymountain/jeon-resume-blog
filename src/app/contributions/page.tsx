@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { contributions } from "@/config/resume";
+import { PageTitle } from "@/components/PageTitle";
 
 export const metadata: Metadata = {
   title: "Contributions",
@@ -14,19 +15,18 @@ function renderInlineCode(text: string) {
 
 export default function ContributionsPage() {
   return (
-    <div className="space-y-8">
-      <header>
-        <p className="text-lg font-medium uppercase tracking-widest text-accent">
-          Contributions
-        </p>
-      </header>
+    <div className="space-y-10">
+      <PageTitle
+        title="Contributions"
+        description="CNCF 생태계를 중심으로 오픈소스 프로젝트에 기여한 내역입니다."
+      />
 
       <section className="space-y-6">
         <div className="space-y-4">
           {contributions.map((c) => (
             <article
               key={c.pr}
-              className="rounded-xl border border-border bg-surface p-5"
+              className="rounded-2xl border border-border bg-surface p-5"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
