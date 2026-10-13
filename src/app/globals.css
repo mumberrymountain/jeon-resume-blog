@@ -17,14 +17,78 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* 상단 히어로 배경: 점 패턴 + 은은한 광원, 아래로 갈수록 사라짐 */
-.hero-bg {
+/* ── 사이트 배경: 설계 도면(blueprint) 그리드 + 광원 + 필름 그레인 ──
+   검은 패널이 떠 보이도록 화면에 고정된 질감 레이어를 깝니다. */
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 45% at 18% 0%, rgb(47 128 237 / 0.22), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgb(20 184 166 / 0.1), transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 40%, #121418, #08090b 75%);
+}
+
+/* 보조선(28px) + 주선(140px) 그리드, 가장자리로 갈수록 흐려짐 */
+.site-bg__grid {
+  position: absolute;
+  inset: 0;
   background-image:
-    radial-gradient(ellipse 70% 60% at 50% 0%, rgb(47 128 237 / 0.16), transparent 70%),
-    radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
-  background-size: 100% 100%, 22px 22px;
-  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent);
-  mask-image: linear-gradient(to bottom, black 40%, transparent);
+    linear-gradient(rgb(120 160 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(120 160 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.028) 1px, transparent 1px);
+  background-size: 140px 140px, 140px 140px, 28px 28px, 28px 28px;
+  background-position: -1px -1px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 85%);
+}
+
+/* 그리드 교차점의 노드: 네트워크 토폴로지 느낌 */
+.site-bg__nodes {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(140 180 255 / 0.35) 1.5px, transparent 2px);
+  background-size: 140px 140px;
+  background-position: -70px -70px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 25%, black 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 25%, black 10%, transparent 75%);
+}
+
+/* 천천히 위아래로 훑고 지나가는 스캔 라인 */
+.site-bg__scan {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 40vh;
+  background: linear-gradient(to bottom, transparent, rgb(47 128 237 / 0.06) 50%, transparent);
+  animation: site-bg-scan 14s ease-in-out infinite;
+}
+@keyframes site-bg-scan {
+  0%,
+  100% {
+    transform: translateY(-40vh);
+  }
+  50% {
+    transform: translateY(100vh);
+  }
+}
+
+/* 필름 그레인: 평평한 그라데이션에 물성 부여 */
+.site-bg__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bg__scan {
+    display: none;
+  }
 }
 
 a {

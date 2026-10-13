@@ -48,7 +48,12 @@ export default function RootLayout({
       </head>
       <body className="relative min-h-screen font-sans">
         <Intro name={site.nameEn} />
-        <div className="hero-bg pointer-events-none absolute inset-x-0 top-0 h-[480px]" aria-hidden />
+        <div className="site-bg" aria-hidden>
+          <div className="site-bg__grid" />
+          <div className="site-bg__nodes" />
+          <div className="site-bg__scan" />
+          <div className="site-bg__grain" />
+        </div>
 
         <div className="relative mx-auto max-w-[1280px] px-4 lg:px-6">
           <header className="flex justify-center py-6 lg:justify-start lg:py-10">
