@@ -10,6 +10,8 @@ export const site = {
   email: "mumberrymountain@gmail.com",
   // 사이드바 프로필 이미지 경로 (public 폴더 기준). 없으면 이니셜이 표시됩니다.
   avatar: "/resume-pic.jpg",
+  // 이력서 PDF(/resume)용 축소본. 원본은 PDF 용량을 크게 늘리므로 따로 둡니다. 없으면 avatar를 씁니다.
+  avatarPrint: "/resume-pic-print.jpg",
   tagline:
     "안정적이고 유지보수하기 좋은 서비스를 만드는 것을 좋아하는 소프트웨어 엔지니어입니다.",
   socials: [

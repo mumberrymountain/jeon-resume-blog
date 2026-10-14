@@ -225,3 +225,42 @@ html[data-intro="leave"] .intro-item {
     transform: translateY(28px);
   }
 }
+
+/* ── 이력서 PDF(/resume) 인쇄 설정 ──
+   항목 단위로만 페이지가 나뉘도록 해서, 항목이 늘어나도 문장이 페이지 경계에서 잘리지 않습니다. */
+@page {
+  size: A4;
+  margin: 14mm 16mm;
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font-size: 9px;
+    color: #94a3b8;
+  }
+}
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #27272a;
+  }
+  .resume-root {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+.resume-heading {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.resume-keep {
+  break-inside: avoid;
+  break-after: avoid;
+  page-break-after: avoid;
+}
+.resume-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}

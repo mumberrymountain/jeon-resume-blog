@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PageTitle, SectionTitle } from "@/components/PageTitle";
 import { assetUrl } from "@/lib/asset";
 import {
@@ -12,7 +13,17 @@ import {
 export default function AboutPage() {
   return (
     <div className="space-y-12">
-      <PageTitle title="About" description={intro} />
+      <div className="space-y-6">
+        <PageTitle title="About" description={intro} />
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/resume/?print=1"
+            className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/80"
+          >
+            이력서 받기
+          </Link>
+        </div>
+      </div>
 
       {/* Strengths */}
       <section className="space-y-4">

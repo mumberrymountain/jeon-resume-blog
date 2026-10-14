@@ -83,9 +83,18 @@ const brandSlugs: Record<string, string> = {
   "Terraform Registry": "terraform",
 };
 
-export function SocialIcon({ label, className = "h-5 w-5" }: { label: string; className?: string }) {
+export function SocialIcon({
+  label,
+  className = "h-5 w-5",
+  color = "white",
+}: {
+  label: string;
+  className?: string;
+  /** simple-icons 색상 (이름 또는 # 없는 hex) */
+  color?: string;
+}) {
   const slug = brandSlugs[label];
   if (!slug) return <LinkIcon className={className} />;
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`https://cdn.simpleicons.org/${slug}/white`} alt="" className={className} />;
+  return <img src={`https://cdn.simpleicons.org/${slug}/${color}`} alt="" className={className} />;
 }

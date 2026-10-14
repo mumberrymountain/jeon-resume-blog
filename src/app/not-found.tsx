@@ -1,19 +1,22 @@
 import Link from "next/link";
+import { SiteShell } from "@/components/SiteShell";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-start gap-4 py-16">
-      <p className="text-sm font-medium uppercase tracking-widest text-accent">
-        404
-      </p>
-      <h2 className="font-serif text-3xl font-bold text-white">페이지를 찾을 수 없습니다.</h2>
-      <p className="text-muted">요청하신 페이지가 존재하지 않거나 이동되었습니다.</p>
-      <Link
-        href="/"
-        className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/80"
-      >
-        About으로 돌아가기
-      </Link>
-    </div>
+    <SiteShell>
+      <div className="flex flex-col items-start gap-4 py-16">
+        <p className="text-sm font-medium uppercase tracking-widest text-accent">
+          404
+        </p>
+        <h2 className="font-serif text-3xl font-bold text-white">페이지를 찾을 수 없습니다.</h2>
+        <p className="text-muted">요청하신 페이지가 존재하지 않거나 이동되었습니다.</p>
+        <Link
+          href="/"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/80"
+        >
+          About으로 돌아가기
+        </Link>
+      </div>
+    </SiteShell>
   );
 }
