@@ -80,6 +80,7 @@ export function LinkIcon(props: IconProps) {
 /** 소셜 링크 라벨에 맞는 브랜드 로고 (simple-icons CDN) */
 const brandSlugs: Record<string, string> = {
   GitHub: "github",
+  "Terraform Registry": "terraform",
 };
 
 export function SocialIcon({ label, className = "h-5 w-5" }: { label: string; className?: string }) {

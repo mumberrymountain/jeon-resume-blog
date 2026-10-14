@@ -14,6 +14,7 @@ export const site = {
     "안정적이고 유지보수하기 좋은 서비스를 만드는 것을 좋아하는 소프트웨어 엔지니어입니다.",
   socials: [
     { label: "GitHub", href: "https://github.com/mumberrymountain" },
+    { label: "Terraform Registry", href: "https://registry.terraform.io/namespaces/mumberrymountain" },
     // { label: "LinkedIn", href: "https://www.linkedin.com/in/your-id" },
   ],
 };
