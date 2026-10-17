@@ -278,9 +278,18 @@ export default function ResumePage() {
           {education.map((edu) => (
             <li
               key={edu.school}
-              className="resume-item grid grid-cols-[30mm_1fr] gap-5"
+              className="resume-item grid grid-cols-[30mm_1fr] items-center gap-5"
             >
-              <span className="text-[11.5px] text-slate-500">{edu.period}</span>
+              {edu.imagePrint ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={assetUrl(edu.imagePrint)}
+                  alt=""
+                  className="h-10 w-10 object-contain"
+                />
+              ) : (
+                <span className="text-[11.5px] text-slate-500">{edu.period}</span>
+              )}
               <p>
                 <span className="font-semibold text-slate-900">{edu.school}</span>
                 <span className="ml-2 text-slate-600">{edu.degree}</span>

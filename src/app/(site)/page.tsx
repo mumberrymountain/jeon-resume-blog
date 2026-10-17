@@ -139,13 +139,25 @@ export default function AboutPage() {
           {education.map((edu) => (
             <div
               key={edu.school}
-              className="flex flex-wrap items-baseline justify-between gap-2 rounded-2xl border border-border bg-surface p-5"
+              className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border bg-surface p-5"
             >
-              <div>
-                <h4 className="font-semibold">{edu.school}</h4>
-                <p className="text-sm text-muted">{edu.degree}</p>
+              <div className="flex items-center gap-4">
+                {edu.image && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={assetUrl(edu.image)}
+                    alt={edu.school}
+                    className="h-12 w-12 shrink-0 object-contain"
+                  />
+                )}
+                <div>
+                  <h4 className="font-semibold">{edu.school}</h4>
+                  <p className="text-sm text-muted">{edu.degree}</p>
+                </div>
               </div>
-              <span className="text-sm text-muted">{edu.period}</span>
+              {edu.period && (
+                <span className="text-sm text-muted">{edu.period}</span>
+              )}
             </div>
           ))}
         </div>

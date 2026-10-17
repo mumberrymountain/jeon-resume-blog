@@ -17,6 +17,8 @@ export type EducationItem = {
   school: string;
   degree: string;
   period?: string;
+  image?: string;
+  imagePrint?: string;
 };
 
 export type Skill = {
@@ -307,5 +309,7 @@ export const education: EducationItem[] = [
   {
     school: "홍익대학교",
     degree: "법학 학사",
+    image: "/hongik-emblem-white.png",
+    imagePrint: "/hongik-emblem-navy.png",
   },
 ];
