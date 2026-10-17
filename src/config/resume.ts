@@ -16,7 +16,7 @@ export type Experience = {
 export type EducationItem = {
   school: string;
   degree: string;
-  period: string;
+  period?: string;
 };
 
 export type Skill = {
@@ -307,6 +307,5 @@ export const education: EducationItem[] = [
   {
     school: "홍익대학교",
     degree: "법학 학사",
-    period: "2017.03 - 2021.02",
   },
 ];
