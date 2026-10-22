@@ -5,6 +5,9 @@ import { MailIcon, MapPinIcon, SocialIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
   title: "Contact",
+  description: `${site.name}에게 연락할 수 있는 이메일과 링크입니다.`,
+  alternates: { canonical: "/contact/" },
+  openGraph: { url: "/contact/" },
 };
 
 export default function ContactPage() {

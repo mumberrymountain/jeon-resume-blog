@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PageTitle, SectionTitle } from "@/components/PageTitle";
 import { assetUrl } from "@/lib/asset";
+import { site } from "@/config/site";
 import {
   intro,
   strengths,
@@ -10,9 +11,26 @@ import {
   certifications,
 } from "@/config/resume";
 
+// 검색 결과에 인물 정보(이름·직함·링크)가 잘 잡히도록 하는 구조화 데이터입니다.
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  alternateName: site.nameEn,
+  jobTitle: site.role,
+  description: site.tagline,
+  url: site.url,
+  image: `${site.url}${site.avatar}`,
+  sameAs: site.socials.map((s) => s.href),
+};
+
 export default function AboutPage() {
   return (
     <div className="space-y-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
+      />
       <div className="space-y-6">
         <PageTitle title="About" description={intro} />
         <div className="flex flex-wrap gap-3">

@@ -20,12 +20,47 @@ const notoSerifKr = Noto_Serif_KR({
 // 페인트 전에 인트로 재생 여부를 정해 본문이 먼저 번쩍 보이지 않게 합니다.
 const introScript = `try{var r=document.documentElement;var seen=sessionStorage.getItem("intro-seen");var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;r.dataset.intro=seen||rm?"skip":"play"}catch(e){}`;
 
+const siteTitle = `${site.name} · ${site.role}`;
+
+// 빈 값은 태그를 만들지 않도록 걸러냅니다.
+const naverVerification = site.verification.naver
+  ? { "naver-site-verification": site.verification.naver }
+  : undefined;
+
 export const metadata: Metadata = {
+  // 상대 경로(canonical, OG 이미지 등)를 절대 URL로 바꿀 때 기준이 됩니다.
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} · ${site.role}`,
+    default: siteTitle,
     template: `%s · ${site.name}`,
   },
   description: site.tagline,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  keywords: ["DevOps", "Infra", "Kubernetes", "AWS", "Terraform", site.name, site.nameEn],
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    siteName: siteTitle,
+    title: siteTitle,
+    description: site.tagline,
+    url: "/",
+  },
+  twitter: {
+    card: "summary",
+    title: siteTitle,
+    description: site.tagline,
+  },
+  robots: { index: true, follow: true },
+  verification: {
+    google: site.verification.google || undefined,
+    other: naverVerification,
+  },
 };
 
 export default function RootLayout({

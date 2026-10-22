@@ -4,6 +4,9 @@ import { PageTitle } from "@/components/PageTitle";
 
 export const metadata: Metadata = {
   title: "Contributions",
+  description: "CNCF 생태계를 중심으로 오픈소스 프로젝트에 기여한 내역입니다.",
+  alternates: { canonical: "/contributions/" },
+  openGraph: { url: "/contributions/" },
 };
 
 function renderInlineCode(text: string) {

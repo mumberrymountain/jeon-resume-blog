@@ -6,6 +6,9 @@ import { PageTitle } from "@/components/PageTitle";
 
 export const metadata: Metadata = {
   title: "Blog",
+  description: "DevOps · 인프라 · 클라우드 실무 경험을 기록하는 기술 블로그입니다.",
+  alternates: { canonical: "/blog/" },
+  openGraph: { url: "/blog/" },
 };
 
 export default function BlogListPage() {
@@ -27,7 +30,7 @@ export default function BlogListPage() {
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="text-lg font-semibold text-white transition-colors group-hover:text-accent">{post.title}</h3>
-                  <time className="text-sm text-muted">
+                  <time dateTime={post.date} className="text-sm text-muted">
                     {formatDate(post.date)}
                   </time>
                 </div>
