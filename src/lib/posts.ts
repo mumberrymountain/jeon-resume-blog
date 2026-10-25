@@ -12,6 +12,8 @@ export type PostMeta = {
   description: string;
   tags: string[];
   readingTime: string;
+  // 본문의 첫 번째 이미지. 목록 카드의 썸네일로 쓰입니다.
+  thumbnail: string | null;
 };
 
 export type Post = PostMeta & {
@@ -31,6 +33,7 @@ function readPostFile(fileName: string): Post {
     description: data.description ?? "",
     tags: Array.isArray(data.tags) ? data.tags : [],
     readingTime: readingTime(content).text,
+    thumbnail: content.match(/!\[[^\]]*\]\(([^)\s]+)/)?.[1] ?? null,
     content,
   };
 }
