@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, getTotalPages } from "@/lib/posts";
 
 // 정적 export에서도 빌드 시점에 sitemap.xml 파일로 만들어지도록 합니다.
 export const dynamic = "force-static";
@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...pages,
+    ...Array.from({ length: getTotalPages() - 1 }, (_, i) => ({
+      url: `${site.url}/blog/page/${i + 2}/`,
+      lastModified: latest,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    })),
     ...posts.map((post) => ({
       url: `${site.url}/blog/${post.slug}/`,
       lastModified: post.date,

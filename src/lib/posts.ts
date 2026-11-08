@@ -52,6 +52,17 @@ export function getAllPosts(): PostMeta[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+export const POSTS_PER_PAGE = 5;
+
+export function getTotalPages(): number {
+  return Math.max(1, Math.ceil(getAllPostFiles().length / POSTS_PER_PAGE));
+}
+
+export function getPostsByPage(page: number): PostMeta[] {
+  const start = (page - 1) * POSTS_PER_PAGE;
+  return getAllPosts().slice(start, start + POSTS_PER_PAGE);
+}
+
 export function getPostBySlug(slug: string): Post | null {
   const files = getAllPostFiles();
   const match = files.find((f) => f.replace(/\.mdx?$/, "") === slug);
